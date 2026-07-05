@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frayed & Found — Curated Thrift</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2E2A26;
+    --linen:#EDE7DD;
+    --sage:#7A8B6F;
+    --rust:#C4602E;
+    --taupe:#A89684;
+    --card-bg:#E3DCCE;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  body{
+    background:var(--linen);
+    color:var(--ink);
+    font-family:'Space Grotesk', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- HEADER ---------- */
+  header{
+    padding:56px 24px 40px;
+    text-align:center;
+    position:relative;
+    border-bottom:1px solid rgba(46,42,38,0.15);
+  }
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--rust);
+    margin-bottom:18px;
+  }
+
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-style:italic;
+    font-size:clamp(42px, 10vw, 76px);
+    letter-spacing:-0.01em;
+    line-height:0.95;
+  }
+
+  .tagline{
+    margin-top:16px;
+    font-size:14px;
+    color:var(--ink);
+    opacity:0.65;
+    max-width:340px;
+    margin-left:auto;
+    margin-right:auto;
+    line-height:1.5;
+  }
+
+  .ledger-count{
+    margin-top:28px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.05em;
+    color:var(--ink);
+    opacity:0.5;
+  }
+
+  /* ---------- FILTER BAR ---------- */
+  .filter-bar{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    padding:20px 24px;
+    scrollbar-width:none;
+    border-bottom:1px solid rgba(46,42,38,0.15);
+  }
+  .filter-bar::-webkit-scrollbar{display:none;}
+
+  .filter-chip{
+    flex:0 0 auto;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.03em;
+    padding:9px 16px;
+    border:1px solid var(--ink);
+    border-radius:100px;
+    background:transparent;
+    color:var(--ink);
+    cursor:pointer;
+    transition:all 0.2s ease;
+    white-space:nowrap;
+  }
+
+  .filter-chip.active{
+    background:var(--ink);
+    color:var(--linen);
+  }
+
+  /* ---------- GRID ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1px;
+    background:rgba(46,42,38,0.15);
+    padding:1px;
+  }
+
+  @media(min-width:640px){
+    .grid{grid-template-columns:repeat(3,1fr);}
+  }
+
+  .lot{
+    background:var(--linen);
+    display:flex;
+    flex-direction:column;
+    animation:fadeIn 0.4s ease both;
+  }
+
+  @keyframes fadeIn{
+    from{opacity:0; transform:translateY(8px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  .lot-image{
+    aspect-ratio:3/4;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+
+  .lot-number{
+    position:absolute;
+    top:12px;
+    left:12px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.05em;
+    color:rgba(46,42,38,0.55);
+    z-index:2;
+  }
+
+  .lot-tag{
+    position:absolute;
+    top:12px;
+    right:12px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:9px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    padding:4px 8px;
+    border-radius:100px;
+    z-index:2;
+  }
+
+  .tag-new{ background:var(--sage); color:var(--linen); }
+  .tag-one{ background:var(--rust); color:var(--linen); }
+
+  .lot-mark{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:15px;
+    text-align:center;
+    padding:0 20px;
+    opacity:0.85;
+    line-height:1.3;
+  }
+
+  .lot-info{
+    padding:14px 16px 18px;
+    border-top:1px solid rgba(46,42,38,0.1);
+  }
+
+  .lot-name{
+    font-size:14px;
+    font-weight:500;
+    margin-bottom:3px;
+  }
+
+  .lot-meta{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--ink);
+    opacity:0.5;
+    letter-spacing:0.02em;
+    margin-bottom:10px;
+  }
+
+  .lot-bottom{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+  }
+
+  .lot-price{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:17px;
+  }
+
+  .wa-btn{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    background:var(--ink);
+    color:var(--linen);
+    border:none;
+    padding:8px 12px;
+    border-radius:100px;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:11.5px;
+    font-weight:500;
+    text-decoration:none;
+    cursor:pointer;
+    transition:background 0.2s ease, transform 0.15s ease;
+    white-space:nowrap;
+  }
+
+  .wa-btn:hover{ background:var(--rust); transform:translateY(-1px); }
+  .wa-btn:active{ transform:translateY(0); }
+  .wa-btn svg{ width:12px; height:12px; flex-shrink:0; }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    padding:48px 24px 60px;
+    text-align:center;
+    border-top:1px solid rgba(46,42,38,0.15);
+  }
+
+  .footer-mark{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:22px;
+    margin-bottom:8px;
+  }
+
+  .footer-note{
+    font-size:12.5px;
+    opacity:0.55;
+    max-width:280px;
+    margin:0 auto 20px;
+    line-height:1.5;
+  }
+
+  .footer-cta{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--rust);
+    color:var(--linen);
+    padding:12px 24px;
+    border-radius:100px;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:500;
+  }
+
+  :focus-visible{ outline:2px solid var(--rust); outline-offset:3px; }
+
+  @media (prefers-reduced-motion: reduce){
+    .lot{ animation:none; }
+    .wa-btn{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Est. Lagos · Consignment Ledger No. 004</div>
+  <h1>Frayed &amp; Found</h1>
+  <p class="tagline">One-of-one thrift pieces, logged by hand and released in small lots. What's gone is gone.</p>
+  <div class="ledger-count" id="ledgerCount">14 pieces currently in the ledger</div>
+</header>
+
+<div class="filter-bar" id="filterBar"></div>
+
+<div class="grid" id="grid"></div>
+
+<footer>
+  <div class="footer-mark">Frayed &amp; Found</div>
+  <p class="footer-note">Every lot is single-quantity and first-come. Tap "Claim on WhatsApp" and we'll confirm availability and arrange delivery or pickup.</p>
+  <a class="footer-cta" href="https://wa.me/2340000000000?text=Hi%2C%20I%27d%20like%20to%20browse%20what%27s%20currently%20available%20at%20Frayed%20%26%20Found" target="_blank" rel="noopener">
+    Message the shop
+  </a>
+</footer>
+
+<script>
+  // ---- PRODUCT LIST ----
+  // Add new pieces here. One entry = one card, auto-rendered below.
+  // "image" left blank uses the styled placeholder block (swap in a real photo URL later).
+  const PRODUCTS = [
+    { id: 1,  name: "Ankara Wrap Dress",        category: "Dresses",  price: 15000, tag: "one",  meta: "Size M · Cotton blend", image: "" },
+    { id: 2,  name: "Lace Bodycon",             category: "Dresses",  price: 22000, tag: "new",  meta: "Size S · Stretch lace", image: "" },
+    { id: 3,  name: "Satin Slip Dress",         category: "Dresses",  price: 18500, tag: "",     meta: "Size M · Satin",        image: "" },
+    { id: 4,  name: "Denim Trucker Jacket",     category: "Outerwear",price: 20000, tag: "one",  meta: "Size L · Denim",        image: "" },
+    { id: 5,  name: "Wool Blend Trench",        category: "Outerwear",price: 32000, tag: "",     meta: "Size M · Wool blend",   image: "" },
+    { id: 6,  name: "Pleated Midi Skirt",       category: "Bottoms",  price: 12500, tag: "new",  meta: "Size S · Polyester",    image: "" },
+    { id: 7,  name: "Wide Leg Trousers",        category: "Bottoms",  price: 16000, tag: "",     meta: "Size M · Cotton",       image: "" },
+    { id: 8,  name: "Vintage Mom Jeans",        category: "Bottoms",  price: 14000, tag: "one",  meta: "Size 30 · Denim",       image: "" },
+    { id: 9,  name: "Silk Blouse",              category: "Tops",     price: 13500, tag: "",     meta: "Size S · Silk",         image: "" },
+    { id: 10, name: "Cropped Knit Cardigan",    category: "Tops",     price: 11000, tag: "new",  meta: "Size M · Knit",         image: "" },
+    { id: 11, name: "Leather Tote",             category: "Bags",     price: 25000, tag: "one",  meta: "Genuine leather",       image: "" },
+    { id: 12, name: "Woven Straw Bag",          category: "Bags",     price: 9500,  tag: "",     meta: "Handwoven",             image: "" },
+    { id: 13, name: "Block Heel Sandals",       category: "Shoes",    price: 17000, tag: "",     meta: "Size 38 · Leather",     image: "" },
+    { id: 14, name: "Platform Loafers",         category: "Shoes",    price: 19500, tag: "new",  meta: "Size 39 · Suede",       image: "" },
+  ];
+
+  const WHATSAPP_NUMBER = "2340000000000"; // shop's WhatsApp number, digits only, country code first
+
+  const grid = document.getElementById('grid');
+  const filterBar = document.getElementById('filterBar');
+  const ledgerCount = document.getElementById('ledgerCount');
+  const categories = ["All", ...new Set(PRODUCTS.map(p => p.category))];
+  let activeCategory = "All";
+
+  function formatPrice(n){
+    return "₦" + n.toLocaleString('en-NG');
+  }
+
+  function waLink(product){
+    const msg = `Hi! I'd like to claim Lot ${String(product.id).padStart(2,'0')} — ${product.name} (${formatPrice(product.price)}). Is it still available?`;
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+  }
+
+  function renderFilters(){
+    filterBar.innerHTML = categories.map(cat =>
+      `<button class="filter-chip ${cat === activeCategory ? 'active' : ''}" data-cat="${cat}">${cat}</button>`
+    ).join('');
+
+    filterBar.querySelectorAll('.filter-chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeCategory = btn.dataset.cat;
+        renderFilters();
+        renderGrid();
+      });
+    });
+  }
+
+  function renderGrid(){
+    const filtered = activeCategory === "All"
+      ? PRODUCTS
+      : PRODUCTS.filter(p => p.category === activeCategory);
+
+    ledgerCount.textContent = `${filtered.length} piece${filtered.length !== 1 ? 's' : ''} currently in the ledger`;
+
+    grid.innerHTML = filtered.map((p, i) => `
+      <div class="lot" style="animation-delay:${i * 0.03}s">
+        <div class="lot-image" style="background:${placeholderTone(p.id)}">
+          <span class="lot-number">LOT ${String(p.id).padStart(2,'0')}</span>
+          ${p.tag === 'new' ? '<span class="lot-tag tag-new">New in</span>' : ''}
+          ${p.tag === 'one' ? '<span class="lot-tag tag-one">Only one</span>' : ''}
+          ${p.image
+            ? `<img src="${p.image}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;">`
+            : `<span class="lot-mark">${p.name}</span>`
+          }
+        </div>
+        <div class="lot-info">
+          <div class="lot-name">${p.name}</div>
+          <div class="lot-meta">${p.meta}</div>
+          <div class="lot-bottom">
+            <span class="lot-price">${formatPrice(p.price)}</span>
+            <a class="wa-btn" href="${waLink(p)}" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.39 1.26 4.81L2 22l5.42-1.42a9.87 9.87 0 004.62 1.18h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm5.87 14.02c-.25.7-1.24 1.29-2.03 1.46-.54.11-1.24.2-3.6-.77-2.99-1.24-4.92-4.27-5.07-4.47-.15-.2-1.22-1.62-1.22-3.1 0-1.48.77-2.2 1.05-2.5.28-.3.6-.37.8-.37.2 0 .4 0 .57.01.18.01.43-.07.67.51.25.6.85 2.08.92 2.23.07.15.12.32.02.52-.1.2-.15.32-.3.5-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.3.76 1.25 1.63 2.02 1.12.99 2.06 1.3 2.36 1.45.3.15.47.12.65-.08.17-.2.74-.86.94-1.16.2-.3.4-.25.67-.15.28.1 1.76.83 2.06.98.3.15.5.22.57.35.08.13.08.72-.17 1.42z"/></svg>
+              Claim
+            </a>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Deterministic muted tone per item so placeholders feel like one set, not random
+  function placeholderTone(id){
+    const tones = ['#E3DCCE', '#DCD3C2', '#E8DED0', '#D9CFC0', '#EAE1D3'];
+    return tones[id % tones.length];
+  }
+
+  renderFilters();
+  renderGrid();
+</script>
+
+</body>
+</html>
