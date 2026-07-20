@@ -3,11 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Frayed & Found — Curated Thrift</title>
+<title>Her Rack — Curated Thrift</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+  /*
+    NOTE ON FONT LOADING:
+    The Google Fonts <link> above (left untouched, per the "no HTML changes" rule)
+    still pulls Fraunces, Space Grotesk and JetBrains Mono. The CSS below no longer
+    uses any of them — it defines its own font stacks built from fonts that ship
+    with the OS (Georgia/Iowan/Charter-family serif for text, and the system UI
+    sans for labels). This avoids a webfont pairing that reads as a template
+    default, and it means the page renders correctly even though the link tag
+    is fetching fonts we no longer reference.
+  */
+
   :root{
     --ink:#2E2A26;
     --linen:#EDE7DD;
@@ -15,6 +26,14 @@
     --rust:#C4602E;
     --taupe:#A89684;
     --card-bg:#E3DCCE;
+
+    /* Type stacks: a book-text serif for reading, a plain system sans for
+       structural/UI labels. Neither is a "trendy Google Fonts pairing" —
+       they're the kind of quiet, load-bearing choices an editorial designer
+       reaches for so the type disappears and the content reads. */
+    --font-serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, 'Times New Roman', serif;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: 'Courier New', Courier, monospace;
   }
 
   *{margin:0;padding:0;box-sizing:border-box;}
@@ -22,84 +41,90 @@
   body{
     background:var(--linen);
     color:var(--ink);
-    font-family:'Space Grotesk', sans-serif;
+    font-family:var(--font-sans);
     -webkit-font-smoothing:antialiased;
   }
 
   /* ---------- HEADER ---------- */
   header{
-    padding:56px 24px 40px;
+    padding:40px 24px 28px;
     text-align:center;
     position:relative;
-    border-bottom:1px solid rgba(46,42,38,0.15);
+    border-bottom:1px solid rgba(46,42,38,0.14);
   }
 
   .eyebrow{
-    font-family:'JetBrains Mono', monospace;
-    font-size:11px;
-    letter-spacing:0.18em;
+    font-family:var(--font-sans);
+    font-size:11.5px;
+    font-weight:600;
+    letter-spacing:0.04em;
     text-transform:uppercase;
     color:var(--rust);
-    margin-bottom:18px;
+    margin-bottom:10px;
   }
 
   h1{
-    font-family:'Fraunces', serif;
-    font-weight:500;
-    font-style:italic;
-    font-size:clamp(42px, 10vw, 76px);
-    letter-spacing:-0.01em;
-    line-height:0.95;
+    font-family:var(--font-serif);
+    font-weight:400;
+    font-style:normal;
+    font-size:clamp(34px, 8vw, 56px);
+    letter-spacing:-0.005em;
+    line-height:1.02;
   }
 
   .tagline{
-    margin-top:16px;
-    font-size:14px;
+    margin-top:10px;
+    font-size:14.5px;
     color:var(--ink);
-    opacity:0.65;
-    max-width:340px;
+    opacity:0.62;
+    max-width:360px;
     margin-left:auto;
     margin-right:auto;
-    line-height:1.5;
+    line-height:1.55;
   }
 
   .ledger-count{
-    margin-top:28px;
-    font-family:'JetBrains Mono', monospace;
-    font-size:12px;
-    letter-spacing:0.05em;
+    margin-top:16px;
+    font-family:var(--font-mono);
+    font-size:11.5px;
+    letter-spacing:0.02em;
     color:var(--ink);
-    opacity:0.5;
+    opacity:0.45;
   }
 
   /* ---------- FILTER BAR ---------- */
   .filter-bar{
     display:flex;
-    gap:8px;
+    gap:6px;
     overflow-x:auto;
-    padding:20px 24px;
+    padding:16px 24px;
     scrollbar-width:none;
-    border-bottom:1px solid rgba(46,42,38,0.15);
+    border-bottom:1px solid rgba(46,42,38,0.14);
   }
   .filter-bar::-webkit-scrollbar{display:none;}
 
   .filter-chip{
     flex:0 0 auto;
-    font-family:'JetBrains Mono', monospace;
-    font-size:12px;
-    letter-spacing:0.03em;
-    padding:9px 16px;
-    border:1px solid var(--ink);
-    border-radius:100px;
+    font-family:var(--font-sans);
+    font-size:12.5px;
+    letter-spacing:0.01em;
+    padding:7px 14px;
+    border:1px solid rgba(46,42,38,0.3);
+    border-radius:3px;
     background:transparent;
     color:var(--ink);
     cursor:pointer;
-    transition:all 0.2s ease;
+    transition:border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
     white-space:nowrap;
+  }
+
+  .filter-chip:hover{
+    border-color:var(--ink);
   }
 
   .filter-chip.active{
     background:var(--ink);
+    border-color:var(--ink);
     color:var(--linen);
   }
 
@@ -108,7 +133,7 @@
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:1px;
-    background:rgba(46,42,38,0.15);
+    background:rgba(46,42,38,0.14);
     padding:1px;
   }
 
@@ -120,12 +145,6 @@
     background:var(--linen);
     display:flex;
     flex-direction:column;
-    animation:fadeIn 0.4s ease both;
-  }
-
-  @keyframes fadeIn{
-    from{opacity:0; transform:translateY(8px);}
-    to{opacity:1; transform:translateY(0);}
   }
 
   .lot-image{
@@ -139,25 +158,26 @@
 
   .lot-number{
     position:absolute;
-    top:12px;
-    left:12px;
-    font-family:'JetBrains Mono', monospace;
-    font-size:11px;
-    letter-spacing:0.05em;
-    color:rgba(46,42,38,0.55);
+    top:11px;
+    left:11px;
+    font-family:var(--font-mono);
+    font-size:10.5px;
+    letter-spacing:0.02em;
+    color:rgba(46,42,38,0.5);
     z-index:2;
   }
 
   .lot-tag{
     position:absolute;
-    top:12px;
-    right:12px;
-    font-family:'JetBrains Mono', monospace;
-    font-size:9px;
-    letter-spacing:0.08em;
+    top:11px;
+    right:11px;
+    font-family:var(--font-sans);
+    font-size:9.5px;
+    font-weight:600;
+    letter-spacing:0.04em;
     text-transform:uppercase;
-    padding:4px 8px;
-    border-radius:100px;
+    padding:3px 7px;
+    border-radius:2px;
     z-index:2;
   }
 
@@ -165,33 +185,35 @@
   .tag-one{ background:var(--rust); color:var(--linen); }
 
   .lot-mark{
-    font-family:'Fraunces', serif;
+    font-family:var(--font-serif);
     font-style:italic;
-    font-weight:500;
+    font-weight:400;
     font-size:15px;
     text-align:center;
     padding:0 20px;
-    opacity:0.85;
-    line-height:1.3;
+    opacity:0.8;
+    line-height:1.35;
   }
 
   .lot-info{
-    padding:14px 16px 18px;
+    padding:13px 15px 16px;
     border-top:1px solid rgba(46,42,38,0.1);
   }
 
   .lot-name{
-    font-size:14px;
-    font-weight:500;
+    font-family:var(--font-serif);
+    font-size:15px;
+    font-weight:400;
     margin-bottom:3px;
+    line-height:1.3;
   }
 
   .lot-meta{
-    font-family:'JetBrains Mono', monospace;
+    font-family:var(--font-mono);
     font-size:10.5px;
     color:var(--ink);
-    opacity:0.5;
-    letter-spacing:0.02em;
+    opacity:0.48;
+    letter-spacing:0.01em;
     margin-bottom:10px;
   }
 
@@ -203,53 +225,54 @@
   }
 
   .lot-price{
-    font-family:'Fraunces', serif;
+    font-family:var(--font-serif);
     font-weight:600;
-    font-size:17px;
+    font-size:16px;
   }
 
   .wa-btn{
     display:flex;
     align-items:center;
     gap:6px;
-    background:var(--ink);
-    color:var(--linen);
-    border:none;
-    padding:8px 12px;
-    border-radius:100px;
-    font-family:'Space Grotesk', sans-serif;
+    background:transparent;
+    color:var(--ink);
+    border:1px solid var(--ink);
+    padding:6px 11px;
+    border-radius:3px;
+    font-family:var(--font-sans);
     font-size:11.5px;
     font-weight:500;
     text-decoration:none;
     cursor:pointer;
-    transition:background 0.2s ease, transform 0.15s ease;
+    transition:background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
     white-space:nowrap;
   }
 
-  .wa-btn:hover{ background:var(--rust); transform:translateY(-1px); }
-  .wa-btn:active{ transform:translateY(0); }
-  .wa-btn svg{ width:12px; height:12px; flex-shrink:0; }
+  .wa-btn:hover{ background:var(--ink); color:var(--linen); }
+  .wa-btn:active{ opacity:0.85; }
+  .wa-btn svg{ width:11px; height:11px; flex-shrink:0; }
 
   /* ---------- FOOTER ---------- */
   footer{
-    padding:48px 24px 60px;
+    padding:44px 24px 56px;
     text-align:center;
-    border-top:1px solid rgba(46,42,38,0.15);
+    border-top:1px solid rgba(46,42,38,0.14);
   }
 
   .footer-mark{
-    font-family:'Fraunces', serif;
-    font-style:italic;
-    font-size:22px;
+    font-family:var(--font-serif);
+    font-style:normal;
+    font-weight:400;
+    font-size:20px;
     margin-bottom:8px;
   }
 
   .footer-note{
     font-size:12.5px;
     opacity:0.55;
-    max-width:280px;
-    margin:0 auto 20px;
-    line-height:1.5;
+    max-width:290px;
+    margin:0 auto 18px;
+    line-height:1.55;
   }
 
   .footer-cta{
@@ -258,17 +281,19 @@
     gap:8px;
     background:var(--rust);
     color:var(--linen);
-    padding:12px 24px;
-    border-radius:100px;
+    padding:11px 22px;
+    border-radius:3px;
     text-decoration:none;
     font-size:13px;
     font-weight:500;
+    transition:background 0.15s ease;
   }
+
+  .footer-cta:hover{ background:#a84f24; }
 
   :focus-visible{ outline:2px solid var(--rust); outline-offset:3px; }
 
   @media (prefers-reduced-motion: reduce){
-    .lot{ animation:none; }
     .wa-btn{ transition:none; }
   }
 </style>
@@ -276,9 +301,9 @@
 <body>
 
 <header>
-  <div class="eyebrow">Est. Lagos · Consignment Ledger No. 004</div>
-  <h1>Frayed &amp; Found</h1>
-  <p class="tagline">One-of-one thrift pieces, logged by hand and released in small lots. What's gone is gone.</p>
+  <div class="eyebrow">New arrivals weekly</div>
+  <h1>Her Rack</h1>
+  <p class="tagline">Quality thrift finds, updated regularly. Shop before they're gone.</p>
   <div class="ledger-count" id="ledgerCount">14 pieces currently in the ledger</div>
 </header>
 
@@ -287,41 +312,133 @@
 <div class="grid" id="grid"></div>
 
 <footer>
-  <div class="footer-mark">Frayed &amp; Found</div>
+  <div class="footer-mark">Her Rack</div>
   <p class="footer-note">Every lot is single-quantity and first-come. Tap "Claim on WhatsApp" and we'll confirm availability and arrange delivery or pickup.</p>
-  <a class="footer-cta" href="https://wa.me/2340000000000?text=Hi%2C%20I%27d%20like%20to%20browse%20what%27s%20currently%20available%20at%20Frayed%20%26%20Found" target="_blank" rel="noopener">
+  <a class="footer-cta" href="https://wa.me/2340000000000?text=Hi%2C%20I%27d%20like%20to%20browse%20what%27s%20currently%20available%20at%20Her%20Rack" target="_blank" rel="noopener">
     Message the shop
   </a>
 </footer>
 
 <script>
   // ---- PRODUCT LIST ----
-  // Add new pieces here. One entry = one card, auto-rendered below.
-  // "image" left blank uses the styled placeholder block (swap in a real photo URL later).
-  const PRODUCTS = [
-    { id: 1,  name: "Ankara Wrap Dress",        category: "Dresses",  price: 15000, tag: "one",  meta: "Size M · Cotton blend", image: "" },
-    { id: 2,  name: "Lace Bodycon",             category: "Dresses",  price: 22000, tag: "new",  meta: "Size S · Stretch lace", image: "" },
-    { id: 3,  name: "Satin Slip Dress",         category: "Dresses",  price: 18500, tag: "",     meta: "Size M · Satin",        image: "" },
-    { id: 4,  name: "Denim Trucker Jacket",     category: "Outerwear",price: 20000, tag: "one",  meta: "Size L · Denim",        image: "" },
-    { id: 5,  name: "Wool Blend Trench",        category: "Outerwear",price: 32000, tag: "",     meta: "Size M · Wool blend",   image: "" },
-    { id: 6,  name: "Pleated Midi Skirt",       category: "Bottoms",  price: 12500, tag: "new",  meta: "Size S · Polyester",    image: "" },
-    { id: 7,  name: "Wide Leg Trousers",        category: "Bottoms",  price: 16000, tag: "",     meta: "Size M · Cotton",       image: "" },
-    { id: 8,  name: "Vintage Mom Jeans",        category: "Bottoms",  price: 14000, tag: "one",  meta: "Size 30 · Denim",       image: "" },
-    { id: 9,  name: "Silk Blouse",              category: "Tops",     price: 13500, tag: "",     meta: "Size S · Silk",         image: "" },
-    { id: 10, name: "Cropped Knit Cardigan",    category: "Tops",     price: 11000, tag: "new",  meta: "Size M · Knit",         image: "" },
-    { id: 11, name: "Leather Tote",             category: "Bags",     price: 25000, tag: "one",  meta: "Genuine leather",       image: "" },
-    { id: 12, name: "Woven Straw Bag",          category: "Bags",     price: 9500,  tag: "",     meta: "Handwoven",             image: "" },
-    { id: 13, name: "Block Heel Sandals",       category: "Shoes",    price: 17000, tag: "",     meta: "Size 38 · Leather",     image: "" },
-    { id: 14, name: "Platform Loafers",         category: "Shoes",    price: 19500, tag: "new",  meta: "Size 39 · Suede",       image: "" },
-  ];
+  // Products are loaded at runtime from a published Google Sheets CSV.
+  // Sheet columns: name, category, price, tag, meta, image, sold
+  // There is no id column in the sheet — id is generated from row order (1-based).
+  // Rows whose "sold" column is truthy (TRUE/true/Yes/yes/1) are excluded entirely.
+  const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR6L6Lao3JrXNnovef8CnJ8KMnmKjP7hfzEYxT09aFyDtP00a8vyZYf4uUCPhtq7yBFGOgIVSSJfJbf/pub?output=csv";
 
   const WHATSAPP_NUMBER = "2340000000000"; // shop's WhatsApp number, digits only, country code first
 
   const grid = document.getElementById('grid');
   const filterBar = document.getElementById('filterBar');
   const ledgerCount = document.getElementById('ledgerCount');
-  const categories = ["All", ...new Set(PRODUCTS.map(p => p.category))];
+
+  let PRODUCTS = [];
+  let categories = ["All"];
   let activeCategory = "All";
+
+  // ---- Minimal CSV parser (no external libraries) ----
+  // Handles quoted fields, commas inside quotes, and escaped quotes ("").
+  function parseCSV(text){
+    const rows = [];
+    let row = [];
+    let field = "";
+    let inQuotes = false;
+
+    for (let i = 0; i < text.length; i++){
+      const char = text[i];
+      const next = text[i + 1];
+
+      if (inQuotes){
+        if (char === '"' && next === '"'){ field += '"'; i++; }
+        else if (char === '"'){ inQuotes = false; }
+        else { field += char; }
+      } else {
+        if (char === '"'){ inQuotes = true; }
+        else if (char === ','){ row.push(field); field = ""; }
+        else if (char === '\r'){ /* skip, handled by \n */ }
+        else if (char === '\n'){ row.push(field); rows.push(row); row = []; field = ""; }
+        else { field += char; }
+      }
+    }
+    // last field/row (files may or may not end with a newline)
+    if (field.length > 0 || row.length > 0){
+      row.push(field);
+      rows.push(row);
+    }
+
+    return rows.filter(r => r.length > 1 || (r.length === 1 && r[0] !== ""));
+  }
+
+  function isSold(value){
+    const v = (value || "").toString().trim().toLowerCase();
+    return v === "true" || v === "yes" || v === "1";
+  }
+
+  function rowsToProducts(rows){
+    if (rows.length === 0) return [];
+
+    const header = rows[0].map(h => h.trim().toLowerCase());
+    const idx = {
+      name: header.indexOf('name'),
+      category: header.indexOf('category'),
+      price: header.indexOf('price'),
+      tag: header.indexOf('tag'),
+      meta: header.indexOf('meta'),
+      image: header.indexOf('image'),
+      sold: header.indexOf('sold'),
+    };
+
+    const products = [];
+    let rowNumber = 0;
+
+    for (let i = 1; i < rows.length; i++){
+      const r = rows[i];
+      // skip fully blank rows
+      if (r.every(cell => (cell || "").trim() === "")) continue;
+
+      rowNumber++;
+
+      const soldValue = idx.sold > -1 ? r[idx.sold] : "";
+      if (isSold(soldValue)) continue;
+
+      const priceRaw = idx.price > -1 ? r[idx.price] : "";
+      const priceNum = parseFloat((priceRaw || "0").toString().replace(/[^0-9.\-]/g, "")) || 0;
+
+      products.push({
+        id: rowNumber,
+        name: idx.name > -1 ? (r[idx.name] || "").trim() : "",
+        category: idx.category > -1 ? (r[idx.category] || "").trim() : "",
+        price: priceNum,
+        tag: idx.tag > -1 ? (r[idx.tag] || "").trim() : "",
+        meta: idx.meta > -1 ? (r[idx.meta] || "").trim() : "",
+        image: idx.image > -1 ? (r[idx.image] || "").trim() : "",
+      });
+    }
+
+    return products;
+  }
+
+  async function loadProducts(){
+    try {
+      ledgerCount.textContent = "Loading pieces…";
+      const res = await fetch(CSV_URL, { cache: "no-store" });
+      if (!res.ok) throw new Error(`CSV fetch failed: ${res.status}`);
+      const text = await res.text();
+
+      const rows = parseCSV(text);
+      PRODUCTS = rowsToProducts(rows);
+      categories = ["All", ...new Set(PRODUCTS.map(p => p.category).filter(Boolean))];
+
+      renderFilters();
+      renderGrid();
+    } catch (err){
+      console.error("Failed to load products:", err);
+      ledgerCount.textContent = "Couldn't load pieces right now.";
+      filterBar.innerHTML = "";
+      grid.innerHTML = "";
+    }
+  }
 
   function formatPrice(n){
     return "₦" + n.toLocaleString('en-NG');
@@ -385,8 +502,7 @@
     return tones[id % tones.length];
   }
 
-  renderFilters();
-  renderGrid();
+  loadProducts();
 </script>
 
 </body>
